@@ -77,11 +77,11 @@ function update(deltaTime) {
         gameState.player.currentRunImageIndex = 0; // Reset to the first frame when not running
     }
 
-    // Reset position if it goes off canvas
-    if (gameState.player.x > canvas.width) {
-        gameState.player.x = 0;
-    } else if (gameState.player.x < 0) {
-        gameState.player.x = canvas.width - gameState.player.width;
+    // Check boundaries to prevent the player from going out of canvas
+    if (gameState.player.x < 0) {
+        gameState.player.x = 0; // Prevent going left
+    } else if (gameState.player.x + gameState.player.width > canvas.width) {
+        gameState.player.x = canvas.width - gameState.player.width; // Prevent going right
     }
 }
 
@@ -140,7 +140,7 @@ window.addEventListener('keydown', (event) => {
         case 'ArrowLeft':
             gameState.keys.left = true; // Move left
             break;
-        case ' ':
+        case 'ArrowUp':
             if (gameState.player.onGround) { // Space bar for jump
                 gameState.player.velocityY = gameState.player.jumpStrength; // Apply jump strength
                 gameState.player.onGround = false; // Set to false since player is in the air
